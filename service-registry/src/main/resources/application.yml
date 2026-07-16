@@ -14,5 +14,11 @@ server:
 
 eureka:
   client:
+    # prevent fetching its own server list (client list)
     fetch-registry: false
+    # server should not register itself as a service
     register-with-eureka: false
+
+
+  instance:
+    ip-address: true
