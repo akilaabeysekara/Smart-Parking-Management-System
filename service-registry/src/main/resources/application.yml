@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: service-registry
+
+    #Nested
+
+    #hello:
+    # - one
+    # - two
+    # - three
+
+server:
+  port: 8761
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
