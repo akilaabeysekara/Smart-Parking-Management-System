@@ -16,7 +16,7 @@ spring:
             - Path=/order-service/**
 
         - id: customer-service
-          uri: http://localhost:5000
+          uri: lb://CUSTOMER-SERVICE
           predicates:
             - Path=/customer-service/**
 
