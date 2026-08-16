@@ -2,13 +2,6 @@ spring:
   application:
     name: service-registry
 
-    #Nested
-
-    #hello:
-    # - one
-    # - two
-    # - three
-
 server:
   port: 8761
 
