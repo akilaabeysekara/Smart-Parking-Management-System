@@ -1,6 +1,7 @@
 package lk.ijse.parkingspaceservice.service.impl;
 
 import lk.ijse.parkingspaceservice.entity.ParkingSpace;
+import lk.ijse.parkingspaceservice.exception.CustomException;
 import lk.ijse.parkingspaceservice.repo.ParkingSpaceRepository;
 import lk.ijse.parkingspaceservice.service.ParkingSpaceService;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,13 @@ public class ParkingSpaceServiceImpl implements ParkingSpaceService {
 
     @Override
     public ParkingSpace getParkingSpaceById(Long id) {
+
         return parkingSpaceRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Parking space not found: " + id));
+                        new CustomException(
+                                "Parking space not found: " + id
+                        )
+                );
     }
 
     @Override
@@ -53,8 +58,9 @@ public class ParkingSpaceServiceImpl implements ParkingSpaceService {
     public void deleteParkingSpace(Long id) {
 
         if (!parkingSpaceRepository.existsById(id)) {
-            throw new RuntimeException(
-                    "Parking space not found: " + id);
+            throw new CustomException(
+                    "Parking space not found: " + id
+            );
         }
 
         parkingSpaceRepository.deleteById(id);
@@ -92,8 +98,9 @@ public class ParkingSpaceServiceImpl implements ParkingSpaceService {
         ParkingSpace parkingSpace = getParkingSpaceById(id);
 
         if (!"AVAILABLE".equals(parkingSpace.getStatus())) {
-            throw new RuntimeException(
-                    "Parking space is not available for reservation");
+            throw new CustomException(
+                    "Parking space is not available for reservation"
+            );
         }
 
         parkingSpace.setStatus("RESERVED");
@@ -108,8 +115,9 @@ public class ParkingSpaceServiceImpl implements ParkingSpaceService {
         ParkingSpace parkingSpace = getParkingSpaceById(id);
 
         if (!"RESERVED".equals(parkingSpace.getStatus())) {
-            throw new RuntimeException(
-                    "Parking space is not currently reserved");
+            throw new CustomException(
+                    "Parking space is not currently reserved"
+            );
         }
 
         parkingSpace.setStatus("AVAILABLE");

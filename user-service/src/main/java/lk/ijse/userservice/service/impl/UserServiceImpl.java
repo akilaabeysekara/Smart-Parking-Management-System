@@ -1,6 +1,7 @@
 package lk.ijse.userservice.service.impl;
 
 import lk.ijse.userservice.entity.User;
+import lk.ijse.userservice.exception.CustomException;
 import lk.ijse.userservice.repo.UserRepository;
 import lk.ijse.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) {
+
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() ->
+                        new CustomException(
+                                "User not found with id: " + id
+                        )
+                );
     }
 
     @Override
@@ -34,7 +40,11 @@ public class UserServiceImpl implements UserService {
     public User updateUser(Long id, User user) {
 
         User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() ->
+                        new CustomException(
+                                "User not found with id: " + id
+                        )
+                );
 
         existingUser.setName(user.getName());
         existingUser.setEmail(user.getEmail());
@@ -50,7 +60,9 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long id) {
 
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("User not found with id: " + id);
+            throw new CustomException(
+                    "User not found with id: " + id
+            );
         }
 
         userRepository.deleteById(id);
@@ -58,7 +70,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
+
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+                .orElseThrow(() ->
+                        new CustomException(
+                                "User not found with email: " + email
+                        )
+                );
     }
 }

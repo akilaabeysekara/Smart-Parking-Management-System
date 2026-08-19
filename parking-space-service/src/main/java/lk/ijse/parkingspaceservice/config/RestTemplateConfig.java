@@ -14,16 +14,3 @@ public class RestTemplateConfig {
         return new RestTemplate();
     }
 }
-
-
-//package ik.ijse.productservice.config;
-//
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//@Configuration
-//public class RestTemplateConfig {
-//    @Bean
-//    public RestTemplateConfig restTemplateConfig() {
-//        return new RestTemplateConfig();
-//    }
-//}
