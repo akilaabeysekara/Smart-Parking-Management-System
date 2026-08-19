@@ -5,10 +5,10 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.1.0</version>
+        <version>4.0.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>ik.ijse</groupId>
+    <groupId>lk.ijse</groupId>
     <artifactId>service-registry</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>service-registry</name>
