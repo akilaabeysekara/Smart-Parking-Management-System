@@ -1,4 +1,4 @@
-package ik.ijse.paymentservice;
+package lk.ijse.paymentservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
