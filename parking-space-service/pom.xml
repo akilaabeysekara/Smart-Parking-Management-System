@@ -11,8 +11,8 @@
     <groupId>ik.ijse</groupId>
     <artifactId>parking-space-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>product-service</name>
-    <description>product-service</description>
+    <name>parking-service</name>
+    <description>parking-service</description>
     <url/>
     <licenses>
         <license/>

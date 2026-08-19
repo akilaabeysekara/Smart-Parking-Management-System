@@ -1,4 +1,4 @@
-package lk.ijse.parkingspaceservice.Entity;
+package lk.ijse.parkingspaceservice.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
