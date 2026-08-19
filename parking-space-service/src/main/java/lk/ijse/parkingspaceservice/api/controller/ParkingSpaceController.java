@@ -1,5 +1,6 @@
 package lk.ijse.parkingspaceservice.api.controller;
 
+import lk.ijse.parkingspaceservice.api.response.ApiResponse;
 import lk.ijse.parkingspaceservice.entity.ParkingSpace;
 import lk.ijse.parkingspaceservice.service.ParkingSpaceService;
 import lombok.RequiredArgsConstructor;
@@ -16,117 +17,188 @@ public class ParkingSpaceController {
 
     private final ParkingSpaceService parkingSpaceService;
 
-    // Create parking space
     @PostMapping
-    public ResponseEntity<ParkingSpace> saveParkingSpace(
+    public ResponseEntity<ApiResponse<ParkingSpace>> saveParkingSpace(
             @RequestBody ParkingSpace parkingSpace) {
 
+        ParkingSpace savedParkingSpace =
+                parkingSpaceService.saveParkingSpace(parkingSpace);
+
         return new ResponseEntity<>(
-                parkingSpaceService.saveParkingSpace(parkingSpace),
+                new ApiResponse<>(
+                        201,
+                        "Parking space created successfully",
+                        savedParkingSpace
+                ),
                 HttpStatus.CREATED
         );
     }
 
-    // Get all parking spaces
     @GetMapping
-    public ResponseEntity<List<ParkingSpace>> getAllParkingSpaces() {
+    public ResponseEntity<ApiResponse<List<ParkingSpace>>>
+    getAllParkingSpaces() {
+
+        List<ParkingSpace> parkingSpaces =
+                parkingSpaceService.getAllParkingSpaces();
 
         return ResponseEntity.ok(
-                parkingSpaceService.getAllParkingSpaces()
+                new ApiResponse<>(
+                        200,
+                        "Parking spaces retrieved successfully",
+                        parkingSpaces
+                )
         );
     }
 
-    // Get parking space by ID
     @GetMapping("/{id}")
-    public ResponseEntity<ParkingSpace> getParkingSpaceById(
-            @PathVariable Long id) {
+    public ResponseEntity<ApiResponse<ParkingSpace>>
+    getParkingSpaceById(@PathVariable Long id) {
+
+        ParkingSpace parkingSpace =
+                parkingSpaceService.getParkingSpaceById(id);
 
         return ResponseEntity.ok(
-                parkingSpaceService.getParkingSpaceById(id)
+                new ApiResponse<>(
+                        200,
+                        "Parking space retrieved successfully",
+                        parkingSpace
+                )
         );
     }
 
-    // Update parking space
     @PutMapping("/{id}")
-    public ResponseEntity<ParkingSpace> updateParkingSpace(
+    public ResponseEntity<ApiResponse<ParkingSpace>>
+    updateParkingSpace(
             @PathVariable Long id,
             @RequestBody ParkingSpace parkingSpace) {
 
+        ParkingSpace updatedParkingSpace =
+                parkingSpaceService.updateParkingSpace(id, parkingSpace);
+
         return ResponseEntity.ok(
-                parkingSpaceService.updateParkingSpace(id, parkingSpace)
+                new ApiResponse<>(
+                        200,
+                        "Parking space updated successfully",
+                        updatedParkingSpace
+                )
         );
     }
 
-    // Delete parking space
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteParkingSpace(
-            @PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>>
+    deleteParkingSpace(@PathVariable Long id) {
 
         parkingSpaceService.deleteParkingSpace(id);
 
-        return ResponseEntity.noContent().build();
-    }
-
-    // Get available parking spaces
-    @GetMapping("/available")
-    public ResponseEntity<List<ParkingSpace>> getAvailableParkingSpaces() {
-
         return ResponseEntity.ok(
-                parkingSpaceService.getAvailableParkingSpaces()
+                new ApiResponse<>(
+                        200,
+                        "Parking space deleted successfully",
+                        null
+                )
         );
     }
 
-    // Get parking spaces by location
+    @GetMapping("/available")
+    public ResponseEntity<ApiResponse<List<ParkingSpace>>>
+    getAvailableParkingSpaces() {
+
+        List<ParkingSpace> parkingSpaces =
+                parkingSpaceService.getAvailableParkingSpaces();
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        200,
+                        "Available parking spaces retrieved successfully",
+                        parkingSpaces
+                )
+        );
+    }
+
     @GetMapping("/location/{location}")
-    public ResponseEntity<List<ParkingSpace>> getParkingSpacesByLocation(
+    public ResponseEntity<ApiResponse<List<ParkingSpace>>>
+    getParkingSpacesByLocation(
             @PathVariable String location) {
 
+        List<ParkingSpace> parkingSpaces =
+                parkingSpaceService.getParkingSpacesByLocation(location);
+
         return ResponseEntity.ok(
-                parkingSpaceService.getParkingSpacesByLocation(location)
+                new ApiResponse<>(
+                        200,
+                        "Parking spaces retrieved successfully for location: "
+                                + location,
+                        parkingSpaces
+                )
         );
     }
 
-    // Get parking spaces by location and status
     @GetMapping("/search")
-    public ResponseEntity<List<ParkingSpace>>
+    public ResponseEntity<ApiResponse<List<ParkingSpace>>>
     getParkingSpacesByLocationAndStatus(
             @RequestParam String location,
             @RequestParam String status) {
 
-        return ResponseEntity.ok(
+        List<ParkingSpace> parkingSpaces =
                 parkingSpaceService
-                        .getParkingSpacesByLocationAndStatus(location, status)
+                        .getParkingSpacesByLocationAndStatus(location, status);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        200,
+                        "Parking spaces retrieved successfully",
+                        parkingSpaces
+                )
         );
     }
 
-    // Reserve parking space
     @PatchMapping("/{id}/reserve")
-    public ResponseEntity<ParkingSpace> reserveParkingSpace(
-            @PathVariable Long id) {
+    public ResponseEntity<ApiResponse<ParkingSpace>>
+    reserveParkingSpace(@PathVariable Long id) {
+
+        ParkingSpace parkingSpace =
+                parkingSpaceService.reserveParkingSpace(id);
 
         return ResponseEntity.ok(
-                parkingSpaceService.reserveParkingSpace(id)
+                new ApiResponse<>(
+                        200,
+                        "Parking space reserved successfully",
+                        parkingSpace
+                )
         );
     }
 
-    // Release parking space
     @PatchMapping("/{id}/release")
-    public ResponseEntity<ParkingSpace> releaseParkingSpace(
-            @PathVariable Long id) {
+    public ResponseEntity<ApiResponse<ParkingSpace>>
+    releaseParkingSpace(@PathVariable Long id) {
+
+        ParkingSpace parkingSpace =
+                parkingSpaceService.releaseParkingSpace(id);
 
         return ResponseEntity.ok(
-                parkingSpaceService.releaseParkingSpace(id)
+                new ApiResponse<>(
+                        200,
+                        "Parking space released successfully",
+                        parkingSpace
+                )
         );
     }
 
-    // Update parking space status
     @PatchMapping("/{id}/status")
-    public ResponseEntity<ParkingSpace> updateParkingSpaceStatus(
+    public ResponseEntity<ApiResponse<ParkingSpace>>
+    updateParkingSpaceStatus(
             @PathVariable Long id,
             @RequestParam String status) {
 
+        ParkingSpace parkingSpace =
+                parkingSpaceService.updateParkingSpaceStatus(id, status);
+
         return ResponseEntity.ok(
-                parkingSpaceService.updateParkingSpaceStatus(id, status)
+                new ApiResponse<>(
+                        200,
+                        "Parking space status updated successfully",
+                        parkingSpace
+                )
         );
     }
 }

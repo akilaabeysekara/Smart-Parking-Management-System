@@ -1,5 +1,6 @@
 package lk.ijse.userservice.api.controller;
 
+import lk.ijse.userservice.api.response.ApiResponse;
 import lk.ijse.userservice.entity.User;
 import lk.ijse.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,51 +18,94 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<ApiResponse<User>> createUser(
+            @RequestBody User user) {
+
+        User createdUser = userService.createUser(user);
+
         return new ResponseEntity<>(
-                userService.createUser(user),
+                new ApiResponse<>(
+                        201,
+                        "User created successfully",
+                        createdUser
+                ),
                 HttpStatus.CREATED
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<User>> getUserById(
+            @PathVariable Long id) {
+
+        User user = userService.getUserById(id);
+
         return ResponseEntity.ok(
-                userService.getUserById(id)
+                new ApiResponse<>(
+                        200,
+                        "User retrieved successfully",
+                        user
+                )
         );
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<ApiResponse<List<User>>> getAllUsers() {
+
+        List<User> users = userService.getAllUsers();
+
         return ResponseEntity.ok(
-                userService.getAllUsers()
+                new ApiResponse<>(
+                        200,
+                        "Users retrieved successfully",
+                        users
+                )
         );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(
+    public ResponseEntity<ApiResponse<User>> updateUser(
             @PathVariable Long id,
-            @RequestBody User user
-    ) {
+            @RequestBody User user) {
+
+        User updatedUser = userService.updateUser(id, user);
+
         return ResponseEntity.ok(
-                userService.updateUser(id, user)
+                new ApiResponse<>(
+                        200,
+                        "User updated successfully",
+                        updatedUser
+                )
         );
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteUser(
+            @PathVariable Long id) {
 
         userService.deleteUser(id);
 
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(
+                new ApiResponse<>(
+                        200,
+                        "User deleted successfully",
+                        null
+                ),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<User> getUserByEmail(
-            @PathVariable String email
-    ) {
+    public ResponseEntity<ApiResponse<User>> getUserByEmail(
+            @PathVariable String email) {
+
+        User user = userService.getUserByEmail(email);
+
         return ResponseEntity.ok(
-                userService.getUserByEmail(email)
+                new ApiResponse<>(
+                        200,
+                        "User retrieved successfully",
+                        user
+                )
         );
     }
 }
