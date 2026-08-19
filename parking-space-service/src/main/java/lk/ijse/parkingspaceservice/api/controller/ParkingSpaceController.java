@@ -1,32 +1,64 @@
 package lk.ijse.parkingspaceservice.api.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lk.ijse.parkingspaceservice.Entity.ParkingSpace;
+import lk.ijse.parkingspaceservice.service.ParkingSpaceService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/parking")
+@RequestMapping("/api/v1/parking-spaces")
+@RequiredArgsConstructor
 public class ParkingSpaceController {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final ParkingSpaceService parkingSpaceService;
 
-    @GetMapping("/parking")
-    public ResponseEntity<String> callOrderService() {
-        String allParkingURL = "http://PARKING-SPACE-SERVICE/parking-space-service/api/v1/parking/all";
-        String res = restTemplate.getForObject(allParkingURL, String.class);
-        return new ResponseEntity<>(res, HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<ParkingSpace> saveParkingSpace(
+            @RequestBody ParkingSpace parkingSpace) {
+
+        return new ResponseEntity<>(
+                parkingSpaceService.saveParkingSpace(parkingSpace),
+                HttpStatus.CREATED
+        );
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<String> getAllParkingSpaces() {
-        return new ResponseEntity<>(
-                "Parking Space Service Java is up and running",
-                HttpStatus.OK
+    @GetMapping("/{id}")
+    public ResponseEntity<ParkingSpace> getParkingSpace(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                parkingSpaceService.getParkingSpaceById(id)
         );
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ParkingSpace>> getAllParkingSpaces() {
+
+        return ResponseEntity.ok(
+                parkingSpaceService.getAllParkingSpaces()
+        );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ParkingSpace> updateParkingSpace(
+            @PathVariable Long id,
+            @RequestBody ParkingSpace parkingSpace) {
+
+        return ResponseEntity.ok(
+                parkingSpaceService.updateParkingSpace(id, parkingSpace)
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteParkingSpace(
+            @PathVariable Long id) {
+
+        parkingSpaceService.deleteParkingSpace(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
