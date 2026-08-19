@@ -1,19 +1,91 @@
 package lk.ijse.vehicleservice.api.controller;
 
+import lk.ijse.vehicleservice.api.response.ApiResponse;
+import lk.ijse.vehicleservice.entity.Vehicle;
+import lk.ijse.vehicleservice.service.VehicleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/vehicle")
+@RequestMapping("/api/v1/vehicles")
+@RequiredArgsConstructor
 public class VehicleController {
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllVehicles() {
+
+    private final VehicleService vehicleService;
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<Vehicle>> saveVehicle(
+            @RequestBody Vehicle vehicle) {
+
         return new ResponseEntity<>(
-                "Vehicle Service Java is up and running",
+                new ApiResponse<>(
+                        201,
+                        "Vehicle saved successfully",
+                        vehicleService.saveVehicle(vehicle)
+                ),
+                HttpStatus.CREATED
+        );
+    }
+
+    @PutMapping("/{vehicleId}")
+    public ResponseEntity<ApiResponse<Vehicle>> updateVehicle(
+            @PathVariable Long vehicleId,
+            @RequestBody Vehicle vehicle) {
+
+        return new ResponseEntity<>(
+                new ApiResponse<>(
+                        200,
+                        "Vehicle updated successfully",
+                        vehicleService.updateVehicle(vehicleId, vehicle)
+                ),
                 HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/{vehicleId}")
+    public ResponseEntity<ApiResponse<Vehicle>> getVehicle(
+            @PathVariable Long vehicleId) {
+
+        return new ResponseEntity<>(
+                new ApiResponse<>(
+                        200,
+                        "Vehicle retrieved successfully",
+                        vehicleService.getVehicle(vehicleId)
+                ),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<Vehicle>>> getAllVehicles() {
+
+        return new ResponseEntity<>(
+                new ApiResponse<>(
+                        200,
+                        "Vehicles retrieved successfully",
+                        vehicleService.getAllVehicles()
+                ),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/{vehicleId}")
+    public ResponseEntity<ApiResponse<Void>> deleteVehicle(
+            @PathVariable Long vehicleId) {
+
+        vehicleService.deleteVehicle(vehicleId);
+
+        return new ResponseEntity<>(
+                new ApiResponse<>(
+                        204,
+                        "Vehicle deleted successfully",
+                        null
+                ),
+                HttpStatus.NO_CONTENT
         );
     }
 }
