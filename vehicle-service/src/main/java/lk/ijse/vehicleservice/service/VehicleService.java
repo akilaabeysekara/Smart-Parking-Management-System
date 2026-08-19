@@ -15,4 +15,8 @@ public interface VehicleService {
     List<Vehicle> getAllVehicles();
 
     void deleteVehicle(Long vehicleId);
+
+    Vehicle vehicleEntry(Long vehicleId);
+
+    Vehicle vehicleExit(Long vehicleId);
 }

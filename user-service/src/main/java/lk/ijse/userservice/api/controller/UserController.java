@@ -86,7 +86,7 @@ public class UserController {
 
         return new ResponseEntity<>(
                 new ApiResponse<>(
-                        200,
+                        204,
                         "User deleted successfully",
                         null
                 ),

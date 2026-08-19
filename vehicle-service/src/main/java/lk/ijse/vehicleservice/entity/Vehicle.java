@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "vehicle")
 @Data
@@ -30,4 +32,10 @@ public class Vehicle {
 
     @Column(nullable = false)
     private Long userId;
+
+    private LocalDateTime entryTime;
+
+    private LocalDateTime exitTime;
+
+    private String status;
 }

@@ -7,6 +7,7 @@ import lk.ijse.vehicleservice.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -66,5 +67,50 @@ public class VehicleServiceImpl implements VehicleService {
         }
 
         vehicleRepository.deleteById(vehicleId);
+    }
+
+    @Override
+    public Vehicle vehicleEntry(Long vehicleId) {
+
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() ->
+                        new CustomException(
+                                "Vehicle not found with id: " + vehicleId
+                        )
+                );
+
+        if ("PARKED".equals(vehicle.getStatus())) {
+            throw new CustomException(
+                    "Vehicle is already parked"
+            );
+        }
+
+        vehicle.setEntryTime(LocalDateTime.now());
+        vehicle.setExitTime(null);
+        vehicle.setStatus("PARKED");
+
+        return vehicleRepository.save(vehicle);
+    }
+
+    @Override
+    public Vehicle vehicleExit(Long vehicleId) {
+
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() ->
+                        new CustomException(
+                                "Vehicle not found with id: " + vehicleId
+                        )
+                );
+
+        if (!"PARKED".equals(vehicle.getStatus())) {
+            throw new CustomException(
+                    "Vehicle is not currently parked"
+            );
+        }
+
+        vehicle.setExitTime(LocalDateTime.now());
+        vehicle.setStatus("EXITED");
+
+        return vehicleRepository.save(vehicle);
     }
 }

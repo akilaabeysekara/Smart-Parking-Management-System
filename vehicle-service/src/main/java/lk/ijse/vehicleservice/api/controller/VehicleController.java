@@ -88,4 +88,32 @@ public class VehicleController {
                 HttpStatus.NO_CONTENT
         );
     }
+
+    @PostMapping("/{vehicleId}/entry")
+    public ResponseEntity<ApiResponse<Vehicle>> vehicleEntry(
+            @PathVariable Long vehicleId) {
+
+        return new ResponseEntity<>(
+                new ApiResponse<>(
+                        200,
+                        "Vehicle entry recorded successfully",
+                        vehicleService.vehicleEntry(vehicleId)
+                ),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/{vehicleId}/exit")
+    public ResponseEntity<ApiResponse<Vehicle>> vehicleExit(
+            @PathVariable Long vehicleId) {
+
+        return new ResponseEntity<>(
+                new ApiResponse<>(
+                        200,
+                        "Vehicle exit recorded successfully",
+                        vehicleService.vehicleExit(vehicleId)
+                ),
+                HttpStatus.OK
+        );
+    }
 }
