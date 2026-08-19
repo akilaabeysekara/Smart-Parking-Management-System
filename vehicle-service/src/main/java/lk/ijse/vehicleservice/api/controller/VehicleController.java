@@ -1,4 +1,4 @@
-package lk.ijse.vehicleservice.controller;
+package lk.ijse.vehicleservice.api.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
