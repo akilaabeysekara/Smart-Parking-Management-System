@@ -81,7 +81,7 @@ public class VehicleController {
 
         return new ResponseEntity<>(
                 new ApiResponse<>(
-                        204,
+                        200,
                         "Vehicle deleted successfully",
                         null
                 ),

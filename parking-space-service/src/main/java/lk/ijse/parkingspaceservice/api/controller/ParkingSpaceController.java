@@ -92,7 +92,7 @@ public class ParkingSpaceController {
 
         return ResponseEntity.ok(
                 new ApiResponse<>(
-                        204,
+                        200,
                         "Parking space deleted successfully",
                         null
                 )
